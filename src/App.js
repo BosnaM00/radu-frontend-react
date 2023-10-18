@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import SearchForm from "./components/SearchForm";
+import LoginForm from "./components/LoginForm";
+import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={<LoginForm setIsAuthenticated={setIsAuthenticated} />}
+        />
+        <Route
+          path="/login"
+          element={<LoginForm setIsAuthenticated={setIsAuthenticated} />}
+        />
+        <Route
+          path="/search"
+          element={
+            isAuthenticated ? (
+              <SearchForm />
+            ) : (
+              <LoginForm setIsAuthenticated={setIsAuthenticated} />
+            )
+          }
+        />
+      </Routes>
     </div>
   );
 }
