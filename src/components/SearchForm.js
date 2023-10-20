@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "../api/axiosConfig";
-import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 const SearchForm = () => {
   const [searchType, setSearchType] = useState("SEARCH");
@@ -13,7 +13,6 @@ const SearchForm = () => {
   const [filterType, setFilterType] = useState("GREATER_THAN");
   const [serverResponse, setServerResponse] = useState(null);
   const [showDownloadButton, setShowDownloadButton] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -195,6 +194,7 @@ const SearchForm = () => {
                 <option value="AFTER_DATE">AFTER_DATE</option>
               </select>
             </div>
+            <div className="form-space" />
             <button type="submit" className="btn btn-primary search-button">
               Search
             </button>
