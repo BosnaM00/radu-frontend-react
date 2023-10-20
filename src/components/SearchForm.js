@@ -4,7 +4,6 @@ import api from "../api/axiosConfig";
 import "../App.css";
 
 const SearchForm = () => {
-  const [searchType, setSearchType] = useState("SEARCH");
   const [system, setSystem] = useState("ALM");
   const [division, setDivision] = useState("BMW");
   const [table, setTable] = useState("TAT_RELEASES");
@@ -16,7 +15,6 @@ const SearchForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "searchType") setSearchType(value);
     if (name === "system") setSystem(value);
     if (name === "division") setDivision(value);
     if (name === "table") setTable(value);
@@ -36,7 +34,6 @@ const SearchForm = () => {
     ];
 
     const searchParams = {
-      searchType: searchType,
       system: system,
       division: division,
       table: table,
@@ -66,7 +63,6 @@ const SearchForm = () => {
     ];
 
     const searchParams = {
-      searchType: "SEARCH",
       system: "ALM",
       division: "BMW",
       table: "TAT_RELEASES",
@@ -90,19 +86,6 @@ const SearchForm = () => {
         <div className="col-md-6">
           <h2>Archived Data</h2>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="searchType">Search type:</label>
-              <select
-                className="form-control"
-                id="searchType"
-                name="searchType"
-                value={searchType}
-                onChange={handleChange}
-              >
-                <option value="SEARCH">SEARCH</option>
-                <option value="COUNT">COUNT</option>
-              </select>
-            </div>
             <div className="form-space" />
             <div className="form-group">
               <label htmlFor="system">System:</label>
