@@ -264,7 +264,7 @@ const SearchForm = () => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => setIsAddingFilter(true)}
+                onMouseDown={() => setIsAddingFilter(true)}
               >
                 Add Filter
               </button>
