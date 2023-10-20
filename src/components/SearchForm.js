@@ -31,17 +31,20 @@ const SearchForm = () => {
       filterType,
       columnValue,
     };
-    console.log(newFilter);
 
     setFilters([...filters, newFilter]);
-
-    console.log(filters);
 
     setColumn("");
     setFilterType("GREATER_THAN");
     setColumnValue("");
     setIsAddingFilter(false);
-    console.log("handleAddFilter");
+  };
+
+  const handleFilterChange = (e, index) => {
+    const { name, value } = e.target;
+    const updatedFilters = [...filters];
+    updatedFilters[index][name] = value;
+    setFilters(updatedFilters);
   };
 
   const handleSubmit = async (e) => {
@@ -199,16 +202,16 @@ const SearchForm = () => {
                 onChange={handleChange}
               />
             </div>
-            {isAddingFilter && (
-              <>
+            {filters.map((filter, index) => (
+              <div key={index}>
                 <div className="form-group">
                   <label htmlFor="column">Column:</label>
                   <select
                     className="form-control"
                     id="column"
                     name="column"
-                    value={column}
-                    onChange={handleChange}
+                    value={filter.column}
+                    onChange={(e) => handleFilterChange(e, index)}
                   >
                     <option value="REL_ID">REL_ID</option>
                     <option value="ASSIGNED_ECU">ASSIGNED_ECU</option>
@@ -225,8 +228,8 @@ const SearchForm = () => {
                     className="form-control"
                     id="filterType"
                     name="filterType"
-                    value={filterType}
-                    onChange={handleChange}
+                    value={filter.filterType}
+                    onChange={(e) => handleFilterChange(e, index)}
                   >
                     <option value="GREATER_THAN">GREATER_THAN</option>
                     <option value="GREATER_LENGTH">GREATER_LENGTH</option>
@@ -242,12 +245,12 @@ const SearchForm = () => {
                     className="form-control"
                     id="columnValue"
                     name="columnValue"
-                    value={columnValue}
-                    onChange={handleChange}
+                    value={filter.columnValue}
+                    onChange={(e) => handleFilterChange(e, index)}
                   />
                 </div>
-              </>
-            )}
+              </div>
+            ))}
             <div className="form-space" />
             {isAddingFilter ? (
               <button
