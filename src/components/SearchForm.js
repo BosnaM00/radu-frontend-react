@@ -12,6 +12,8 @@ const SearchForm = () => {
   const [filterType, setFilterType] = useState("GREATER_THAN");
   const [serverResponse, setServerResponse] = useState(null);
   const [showDownloadButton, setShowDownloadButton] = useState(false);
+  const [filters, setFilters] = useState([]);
+  const [isAddingFilter, setIsAddingFilter] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +25,25 @@ const SearchForm = () => {
     if (name === "filterType") setFilterType(value);
   };
 
+  const handleAddFilter = () => {
+    const newFilter = {
+      column,
+      filterType,
+      columnValue,
+    };
+    console.log(newFilter);
+
+    setFilters([...filters, newFilter]);
+
+    console.log(filters);
+
+    setColumn("");
+    setFilterType("GREATER_THAN");
+    setColumnValue("");
+    setIsAddingFilter(false);
+    console.log("handleAddFilter");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const searchData = [
@@ -30,6 +51,7 @@ const SearchForm = () => {
         column: "REL_ID",
         columnValue: "1003",
         filterType: ["GREATER_THAN"],
+        ...filters,
       },
     ];
 
@@ -150,18 +172,6 @@ const SearchForm = () => {
             </div>
             <div className="form-space" />
             <div className="form-group">
-              <label htmlFor="columnValue">Column value:</label>
-              <input
-                type="text"
-                className="form-control"
-                id="columnValue"
-                name="columnValue"
-                value={columnValue}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-space" />
-            <div className="form-group">
               <label htmlFor="filterType">Filter type:</label>
               <select
                 className="form-control"
@@ -177,6 +187,85 @@ const SearchForm = () => {
                 <option value="AFTER_DATE">AFTER_DATE</option>
               </select>
             </div>
+            <div className="form-space" />
+            <div className="form-group">
+              <label htmlFor="columnValue">Column value:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="columnValue"
+                name="columnValue"
+                value={columnValue}
+                onChange={handleChange}
+              />
+            </div>
+            {isAddingFilter && (
+              <>
+                <div className="form-group">
+                  <label htmlFor="column">Column:</label>
+                  <select
+                    className="form-control"
+                    id="column"
+                    name="column"
+                    value={column}
+                    onChange={handleChange}
+                  >
+                    <option value="REL_ID">REL_ID</option>
+                    <option value="ASSIGNED_ECU">ASSIGNED_ECU</option>
+                    <option value="LEAKMODEL">LEAKMODEL</option>
+                    <option value="INVOLVED_ISTEP">INVOLVED_ISTEP</option>
+                    <option value="FACE">FACE</option>
+                    <option value="CREATE_TIME">CREATE_TIME</option>
+                    <option value="TARGET_SET">TARGET_SET</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="filterType">Filter type:</label>
+                  <select
+                    className="form-control"
+                    id="filterType"
+                    name="filterType"
+                    value={filterType}
+                    onChange={handleChange}
+                  >
+                    <option value="GREATER_THAN">GREATER_THAN</option>
+                    <option value="GREATER_LENGTH">GREATER_LENGTH</option>
+                    <option value="FIND_TEXT">FIND_TEXT</option>
+                    <option value="BEFORE_DATE">BEFORE_DATE</option>
+                    <option value="AFTER_DATE">AFTER_DATE</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="columnValue">Column value:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="columnValue"
+                    name="columnValue"
+                    value={columnValue}
+                    onChange={handleChange}
+                  />
+                </div>
+              </>
+            )}
+            <div className="form-space" />
+            {isAddingFilter ? (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleAddFilter}
+              >
+                Add Filter
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setIsAddingFilter(true)}
+              >
+                Add Filter
+              </button>
+            )}
             <div className="form-space" />
             <button type="submit" className="btn btn-primary search-button">
               Search
