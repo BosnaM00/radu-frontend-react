@@ -1,0 +1,28 @@
+label {
+  color: rgb(12, 12, 104);
+  font-weight: bold;
+}
+
+.form-space {
+  margin-bottom: 9px;
+}
+
+.search-button {
+  width: 160px;
+  height: 40px;
+  font-size: 20px;
+  display: block;
+  margin: 0 auto;
+}
+
+.custom-server-response {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+}
