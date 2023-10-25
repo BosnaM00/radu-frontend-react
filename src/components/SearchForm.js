@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "../api/axiosConfig";
 import "../App.css";
 
 const SearchForm = () => {
+  const [systems, setSystems] = useState([]);
+  const [divisions, setDivisions] = useState([]);
+  const [filterTypes, setFilterTypes] = useState([]);
+  const [tables, setTables] = useState([]);
+  
   const [system, setSystem] = useState("ALM");
   const [division, setDivision] = useState("BMW");
   const [table, setTable] = useState("TAT_RELEASES");
@@ -108,7 +113,6 @@ const SearchForm = () => {
   const getDivisions = async () => {
     try {
       const response = await api.get("/filters/division");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Eroare la obținerea diviziilor:', error);
@@ -119,7 +123,6 @@ const SearchForm = () => {
   const getFilterTypes = async () => {
     try {
       const response = await api.get("filters/filterType");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Eroare la obținerea tipurilor de filtru:', error);
@@ -129,7 +132,7 @@ const SearchForm = () => {
   
   const getSystems = async () => {
     try {
-      const response = await api.get("filters/systems");
+      const response = await api.get("filters/system");
       return response.data;
     } catch (error) {
       console.error('Eroare la obținerea sistemelor:', error);
@@ -139,8 +142,7 @@ const SearchForm = () => {
   
   const getTables = async () => {
     try {
-      const response = await api.get("/filters/tables");
-      console.log(response.data);
+      const response = await api.get("/filters/table");
       return response.data;
     } catch (error) {
       console.error('Eroare la obținerea tabelelor:', error);
@@ -148,16 +150,28 @@ const SearchForm = () => {
     }
   };
   
-  const getFilterOptions = async (table) => {
-    try {
-      const response = await api.post("filters/filterOptions", { table });
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Eroare la obținerea opțiunilor de filtru:', error);
-      throw error;
-    }
-  };
+  useEffect(() => {
+    getSystems()
+    .then((systemData) => {
+      setSystems(systemData);
+    })
+    .catch((error) => {
+      console.error('Eroare la obținerea sistemelor:', error);
+    });
+  
+    getDivisions()
+      .then((divisionData) => setDivisions(divisionData))
+      .catch((error) => console.error('Eroare la obținerea diviziilor:', error));
+  
+    getFilterTypes()
+      .then((filterTypeData) => setFilterTypes(filterTypeData))
+      .catch((error) => console.error('Eroare la obținerea tipurilor de filtru:', error));
+  
+    getTables()
+      .then((tableData) => setTables(tableData))
+      .catch((error) => console.error('Eroare la obținerea tabelelor:', error));
+  }, []);
+  
 
   return (
     <div className="container">
@@ -169,15 +183,18 @@ const SearchForm = () => {
             <div className="form-group">
               <label htmlFor="system">System:</label>
               <select
-                className="form-control"
-                id="system"
-                name="system"
-                value={system}
-                onChange={handleChange}
-              >
-                <option value="ALM">ALM</option>
-                <option value="OCTANE">OCTANE</option>
-              </select>
+              className="form-control"
+              id="system"
+              name="system"
+              value={system}
+              onChange={handleChange}
+            >
+              {systems.map((sys) => (
+                <option key={sys} value={sys}>
+                  {sys}
+                </option>
+              ))}
+            </select>
             </div>
             <div className="form-space" />
             <div className="form-group">
@@ -189,10 +206,12 @@ const SearchForm = () => {
                 value={division}
                 onChange={handleChange}
               >
-                <option value="BMW">BMW</option>
-                <option value="BBA">BBA</option>
-                <option value="MOTORRAD">MOTORRAD</option>
-              </select>
+                {divisions.map((div) => (
+                  <option key={div} value={div}>
+                    {div}
+                  </option>
+                ))}
+              </select> 
             </div>
             <div className="form-space" />
             <div className="form-group">
@@ -204,8 +223,11 @@ const SearchForm = () => {
                 value={table}
                 onChange={handleChange}
               >
-                <option value="TAT_RELEASES">TAT_RELEASES</option>
-                <option value="TAT_STEP">TAT_STEP</option>
+                {tables.map((table) => (
+                  <option key={table} value={table}>
+                    {table}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-space" />
@@ -237,11 +259,11 @@ const SearchForm = () => {
                 value={filterType}
                 onChange={handleChange}
               >
-                <option value="GREATER_THAN">GREATER_THAN</option>
-                <option value="GREATER_LENGTH">GREATER_LENGTH</option>
-                <option value="FIND_TEXT">FIND_TEXT</option>
-                <option value="BEFORE_DATE">BEFORE_DATE</option>
-                <option value="AFTER_DATE">AFTER_DATE</option>
+                {filterTypes.map((filterType) => (
+                  <option key={filterType} value={filterType}>
+                    {filterType}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-space" />
