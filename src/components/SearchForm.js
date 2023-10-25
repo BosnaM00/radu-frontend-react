@@ -105,6 +105,60 @@ const SearchForm = () => {
     }
   };
 
+  const getDivisions = async () => {
+    try {
+      const response = await api.get("/filters/division");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Eroare la obținerea diviziilor:', error);
+      throw error;
+    }
+  };
+  
+  const getFilterTypes = async () => {
+    try {
+      const response = await api.get("filters/filterType");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Eroare la obținerea tipurilor de filtru:', error);
+      throw error;
+    }
+  };
+  
+  const getSystems = async () => {
+    try {
+      const response = await api.get("filters/systems");
+      return response.data;
+    } catch (error) {
+      console.error('Eroare la obținerea sistemelor:', error);
+      throw error;
+    }
+  };
+  
+  const getTables = async () => {
+    try {
+      const response = await api.get("/filters/tables");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Eroare la obținerea tabelelor:', error);
+      throw error;
+    }
+  };
+  
+  const getFilterOptions = async (table) => {
+    try {
+      const response = await api.post("filters/filterOptions", { table });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Eroare la obținerea opțiunilor de filtru:', error);
+      throw error;
+    }
+  };
+
   return (
     <div className="container">
       <div className="row justify-content-center">
