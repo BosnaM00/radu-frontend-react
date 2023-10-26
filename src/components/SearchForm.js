@@ -329,16 +329,18 @@ const SearchForm = () => {
             {isAddingFilter ? (
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-info" // Schimbă culoarea în albastru deschis sau altă culoare dorită
                 onClick={handleAddFilter}
+                style={{ float: 'right' }} // Mută butonul în dreapta
               >
                 Add Filter
               </button>
             ) : (
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-info" // Schimbă culoarea în albastru deschis sau altă culoare dorită
                 onMouseDown={() => setIsAddingFilter(true)}
+                style={{ float: 'right' }} // Mută butonul în dreapta
               >
                 Add Filter
               </button>
