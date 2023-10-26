@@ -4,17 +4,16 @@ import api from "../api/axiosConfig";
 import "../App.css";
 
 const SearchForm = () => {
-  const [systems, setSystems] = useState([]);
-  const [divisions, setDivisions] = useState([]);
-  const [filterTypes, setFilterTypes] = useState([]);
-  const [tables, setTables] = useState([]);
-  
   const [system, setSystem] = useState("ALM");
+  const [systems, setSystems] = useState([]);
   const [division, setDivision] = useState("BMW");
+  const [divisions, setDivisions] = useState([]);
   const [table, setTable] = useState("TAT_RELEASES");
-  const [column, setColumn] = useState("");
+  const [tables, setTables] = useState([]);
   const [columnValue, setColumnValue] = useState("");
   const [filterType, setFilterType] = useState("GREATER_THAN");
+  const [filterTypes, setFilterTypes] = useState([]);
+  const [column, setColumn] = useState("");
   const [serverResponse, setServerResponse] = useState(null);
   const [showDownloadButton, setShowDownloadButton] = useState(false);
   const [filters, setFilters] = useState([]);
@@ -262,7 +261,7 @@ const SearchForm = () => {
                 ))}
               </select>
             </div>
-            <div className="form-space" />
+            <div className="form-space" >
             <div className="form-group">
               <label htmlFor="columnValue">Column value:</label>
               <input
@@ -273,6 +272,8 @@ const SearchForm = () => {
                 value={columnValue}
                 onChange={handleChange}
               />
+            </div>
+            <hr />
             </div>
             {filters.map((filter, index) => (
               <div key={index}>
@@ -300,15 +301,15 @@ const SearchForm = () => {
                     className="form-control"
                     id="filterType"
                     name="filterType"
-                    value={filter.filterType}
-                    onChange={(e) => handleFilterChange(e, index)}
+                    value={filterType}
+                    onChange={handleChange}
                   >
-                    <option value="GREATER_THAN">GREATER_THAN</option>
-                    <option value="GREATER_LENGTH">GREATER_LENGTH</option>
-                    <option value="FIND_TEXT">FIND_TEXT</option>
-                    <option value="BEFORE_DATE">BEFORE_DATE</option>
-                    <option value="AFTER_DATE">AFTER_DATE</option>
-                  </select>
+                    {filterTypes.map((filterType) => (
+                      <option key={filterType} value={filterType}>
+                        {filterType}
+                      </option>
+                    ))}
+                </select>
                 </div>
                 <div className="form-group">
                   <label htmlFor="columnValue">Column value:</label>
@@ -321,6 +322,7 @@ const SearchForm = () => {
                     onChange={(e) => handleFilterChange(e, index)}
                   />
                 </div>
+                {index < filters.length - 1 && <hr />}
               </div>
             ))}
             <div className="form-space" />
