@@ -152,12 +152,8 @@ const SearchForm = () => {
   
   useEffect(() => {
     getSystems()
-    .then((systemData) => {
-      setSystems(systemData);
-    })
-    .catch((error) => {
-      console.error('Eroare la obținerea sistemelor:', error);
-    });
+      .then((system) => setSystems(system))
+      .catch((error) => console.error('Eroare la obținerea diviziilor:', error));
   
     getDivisions()
       .then((divisionData) => setDivisions(divisionData))
