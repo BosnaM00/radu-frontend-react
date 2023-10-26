@@ -4,6 +4,8 @@ import api from "../api/axiosConfig";
 import "../App.css";
 
 const SearchForm = () => {
+  const [searchTypeCount] = useState("COUNT");
+  const [searchTypeSearch] = useState("SEARCH");
   const [system, setSystem] = useState("ALM");
   const [systems, setSystems] = useState([]);
   const [division, setDivision] = useState("BMW");
@@ -14,10 +16,12 @@ const SearchForm = () => {
   const [filterType, setFilterType] = useState("GREATER_THAN");
   const [filterTypes, setFilterTypes] = useState([]);
   const [column, setColumn] = useState("");
+  const [count, setCount] = useState(null);
   const [serverResponse, setServerResponse] = useState(null);
   const [showDownloadButton, setShowDownloadButton] = useState(false);
   const [filters, setFilters] = useState([]);
   const [isAddingFilter, setIsAddingFilter] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +67,7 @@ const SearchForm = () => {
     ];
 
     const searchParams = {
+      searchType: searchTypeCount,
       system: system,
       division: division,
       table: table,
@@ -71,10 +76,8 @@ const SearchForm = () => {
 
     try {
       const response = await api.post("/search", searchParams);
-      setServerResponse(response.data);
-      console.log("Răspuns de la server:", response.data);
-      console.log(searchParams);
-
+      console.log(response.data.count);
+      setCount(response.data.count);
       setShowDownloadButton(true);
     } catch (error) {
       console.error("Eroare de la server:", error);
@@ -92,6 +95,7 @@ const SearchForm = () => {
     ];
 
     const searchParams = {
+      searchType: "SEARCH",
       system: "ALM",
       division: "BMW",
       table: "TAT_RELEASES",
@@ -329,18 +333,18 @@ const SearchForm = () => {
             {isAddingFilter ? (
               <button
                 type="button"
-                className="btn btn-info" // Schimbă culoarea în albastru deschis sau altă culoare dorită
+                className="btn btn-info"
                 onClick={handleAddFilter}
-                style={{ float: 'right' }} // Mută butonul în dreapta
+                style={{ float: 'right' }} 
               >
                 Add Filter
               </button>
             ) : (
               <button
                 type="button"
-                className="btn btn-info" // Schimbă culoarea în albastru deschis sau altă culoare dorită
+                className="btn btn-info" 
                 onMouseDown={() => setIsAddingFilter(true)}
-                style={{ float: 'right' }} // Mută butonul în dreapta
+                style={{ float: 'right' }}
               >
                 Add Filter
               </button>
@@ -350,9 +354,9 @@ const SearchForm = () => {
               Search
             </button>
           </form>
-          {serverResponse && (
+          {(
             <div className="server-response custom-server-response">
-              <p>{serverResponse}</p>
+              <p>The number of archived data is: {count}</p>
             </div>
           )}
           {showDownloadButton && (
